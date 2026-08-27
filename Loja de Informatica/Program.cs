@@ -4,38 +4,31 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 
 namespace Loja_de_Informatica
-{ 
+{
 
-    class MenuPrincipal
+    //CLASSE MENU
+    internal class Menu
     {
-        static string opcaoErro = ">> VALOR INFORMADO INVÁLIDO, FAVOR!! <<\n";
-        static string nomeLoja = "LOJA DE INFORMÁTICA!\n\n\n";
-        public static string opcao { get; set; }
+        internal static string opcaoErro = ">> VALOR INFORMADO INVÁLIDO, FAVOR!! <<\n";
 
-         
+        internal static string nomeLoja = "LOJA DE INFORMÁTICA!\n\n\n";
 
+        internal List<string> opcoes = new List<string>();
 
+        internal static string opcao { get; set; }
+        internal static string opcao2 { get; set; }
+
+        //MÉTODO MENU
         public string OpcaoMenu()
         {
+            opcao = "0";
 
             Console.WriteLine(nomeLoja);
 
-            //Menu Principal
-            //Escolha
-            Console.WriteLine("Informe valor numérico para:\n");
-            Console.WriteLine("1-Vendas!");
-            Console.WriteLine("2-Compras!");
-            Console.WriteLine("3-CLientes!");
-            Console.WriteLine("4-Funcionários!");
-            Console.WriteLine("5-Fornecedores!");
-            Console.WriteLine("6-Produtos!");
-            opcao = Console.ReadLine();
-
-            while (opcao != "1" && opcao != "2" && opcao != "3" && opcao != "4" && opcao != "5" && opcao != "6")
+            //MENUS
+            //MENU PRINCIPAL
+            if (opcao == "0")
             {
-                Console.Clear();
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine(opcaoErro);
                 Console.WriteLine("Informe valor numérico para:\n");
                 Console.WriteLine("1-Vendas!");
                 Console.WriteLine("2-Compras!");
@@ -45,6 +38,170 @@ namespace Loja_de_Informatica
                 Console.WriteLine("6-Produtos!");
                 opcao = Console.ReadLine();
 
+                while (opcao != "1" && opcao != "2" && opcao != "3" && opcao != "4" && opcao != "5" && opcao != "6")
+                {
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe valor numérico para:\n");
+                    Console.WriteLine("1-Vendas!");
+                    Console.WriteLine("2-Compras!");
+                    Console.WriteLine("3-CLientes!");
+                    Console.WriteLine("4-Funcionários!");
+                    Console.WriteLine("5-Fornecedores!");
+                    Console.WriteLine("6-Produtos!");
+                    opcao = Console.ReadLine();
+                }
+            }
+            //MENU VENDAS
+            else if (opcao == "1")
+            {
+                opcao2 = "venda";
+                Console.WriteLine(nomeLoja);
+                Console.WriteLine("VENDAS:\n");
+                Console.WriteLine("Informe:\n ");
+                Console.WriteLine("1-Nova Venda!");
+                Console.WriteLine("2-Buscar Venda!");
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "2")
+                {
+
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine("VENDAS:\n");
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe:\n");
+                    Console.WriteLine("1-Nova Venda!");
+                    Console.WriteLine("2-Buscar Venda!");
+                    opcao = Console.ReadLine();
+                }
+                Console.Clear();
+            }
+            //MENU COMPRAS
+            else if (opcao == "2")
+            {
+                opcao2 = "compra";
+                Console.WriteLine(nomeLoja);
+                Console.WriteLine("COMPRAS:\n");
+                Console.WriteLine("Informe:\n ");
+                Console.WriteLine("1-Nova Compra!");
+                Console.WriteLine("2-Buscar Compra!");
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "2")
+                {
+
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine("COMPRAS:\n");
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe:\n");
+                    Console.WriteLine("1-Nova Compra!");
+                    Console.WriteLine("2-Buscar Compra!");
+                    opcao = Console.ReadLine();
+                }
+                Console.Clear();
+            }
+            //MENU CLIENTES
+            else if (opcao == "3")
+            {
+                opcao2 = "cliente";
+                Console.WriteLine(nomeLoja);
+                Console.WriteLine("CLIENTES:\n");
+                Console.WriteLine("Informe:\n ");
+                Console.WriteLine("1-Novo Cliente!");
+                Console.WriteLine("2-Buscar Cliente!");
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "2")
+                {
+
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine("CLIENTES:\n");
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe:\n");
+                    Console.WriteLine("1-Novo Cliente!");
+                    Console.WriteLine("2-Buscar Cliente!");
+                    opcao = Console.ReadLine();
+                }
+                Console.Clear();
+            }
+            //MENU FUNCIONÁRIOS
+            else if (opcao == "4")
+            {
+                opcao2 = "funcionario";
+                Console.WriteLine(nomeLoja);
+                Console.WriteLine("FUNCIONÁRIOS:\n");
+                Console.WriteLine("Informe:\n ");
+                Console.WriteLine("1-Novo Funcionário!");
+                Console.WriteLine("2-Buscar Funcionário!");
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "2")
+                {
+
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine("FUNCIONÁRIOS:\n");
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe:\n");
+                    Console.WriteLine("1-Novo Funcionário!");
+                    Console.WriteLine("2-Buscar Funcionário!");
+                    opcao = Console.ReadLine();
+                }
+                Console.Clear();
+            }
+            //MENU FORNECEDORES
+            else if (opcao == "5")
+            {
+                opcao2 = "fornecedor";
+                Console.WriteLine(nomeLoja);
+                Console.WriteLine("FORNECEDORES:\n");
+                Console.WriteLine("Informe:\n ");
+                Console.WriteLine("1-Novo Fornecedor!");
+                Console.WriteLine("2-Buscar Fornecedor!");
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "2")
+                {
+
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine("FORNECEDORES:\n");
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe:\n");
+                    Console.WriteLine("1-Novo Fornecedor!");
+                    Console.WriteLine("2-Buscar Fornecedor!");
+                    opcao = Console.ReadLine();
+                }
+                Console.Clear();
+            }
+            //MENU PRODUTOS
+            else if (opcao == "6")
+            {
+                opcao2 = "produto";
+                Console.WriteLine(nomeLoja);
+                Console.WriteLine("PRODUTOS:\n");
+                Console.WriteLine("Informe:\n ");
+                Console.WriteLine("1-Novo Produto!");
+                Console.WriteLine("2-Buscar Produto!");
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "2")
+                {
+
+                    Console.Clear();
+                    Console.WriteLine(nomeLoja);
+                    Console.WriteLine("PRODUTOS:\n");
+                    Console.WriteLine(opcaoErro);
+                    Console.WriteLine("Informe:\n");
+                    Console.WriteLine("1-Novo Produto!");
+                    Console.WriteLine("2-Buscar Produto!");
+                    opcao = Console.ReadLine();
+                }
+                Console.Clear();
             }
             Console.Clear();
 
@@ -53,6 +210,10 @@ namespace Loja_de_Informatica
 
     }
 
+    //CLASSE CADASTRO
+
+
+    //CLASSE FUNCIONÁRIO
     class Funcionario
     {
         public string Nome { get; set; }
@@ -66,6 +227,7 @@ namespace Loja_de_Informatica
         public double Salario { get; set; }
 
         public long QuantidadeFunc { get; set; }
+
 
         /*
         //forma auternativa de declarar métodos Get e Set
@@ -82,7 +244,57 @@ namespace Loja_de_Informatica
         }
         */
 
-        //Cadastrar Funcionário
+        //MÉTODO CADASTRO
+        private void Cadastro()
+        {
+            public List<Cliente> nomeCliente { get; set; }
+
+            public List<Cliente> foneCliente { get; set; }
+
+            public List<Cliente> cpfCliente { get; set; }
+
+            //verificar nCompras para confirmar se cliente ativo ou não e fornecer desconto se cliente com X compras
+            private List<Cliente> nComprasCliente { get; set; }
+
+            public List<Produto> idProduto { get; set; }
+
+            public List<Produto> nomeProduto { get; set; }
+
+            public List<Produto> ValorVenda { get; set; }
+
+            public long qtdVenda { get; set; }
+
+            public double valorTotal { get; set; }
+
+            if (Menu.opcao2 == "1")
+            {
+                Clientes List<Cliente>  = new List<Cliente>();
+
+                Cliente cliente = new Cliente();
+
+                Console.WriteLine(Menu.nomeLoja);
+                Console.WriteLine("CADASTRO CLIENTE:\n");
+                Console.WriteLine("Informe\n\n");
+                Console.WriteLine("Nome do Cliente: ");
+                cliente.nome = Console.ReadLine();
+                Console.WriteLine("Telefone: ");
+                cliente.telefone = Console.ReadLine();
+                Console.WriteLine("CPF: ");
+                cliente.CPF = Console.ReadLine();
+
+                clientes.Add(cliente);
+
+
+
+                Console.WriteLine(cliente.nome);
+                Console.WriteLine(cliente.telefone);
+                Console.WriteLine(cliente.CPF);
+            }
+            else if ()
+            {
+
+            }
+        }
 
 
 
@@ -100,7 +312,7 @@ namespace Loja_de_Informatica
 
     }
 
-
+    //CLASSE CLIENTE
     class Cliente
     {
         public string nome { get; set; }
@@ -114,12 +326,10 @@ namespace Loja_de_Informatica
 
         public long quantidadeCli { get; set; }
 
-        //Cadastrar Cliente
-
-
 
     }
 
+    //CLASSE PRODUTO
     class Produto
     {
         public long id { get; set; }
@@ -138,6 +348,7 @@ namespace Loja_de_Informatica
 
     }
 
+    //CLASSE NOTA FISCAL
     class NotaFiscal
     {
         public long id { get; set; }
@@ -152,6 +363,7 @@ namespace Loja_de_Informatica
 
     }
 
+    //CLASSE COMPRA
     class Compra
     {
         public List<Fornecedor> nomeFornecedor { get; set; }
@@ -172,7 +384,7 @@ namespace Loja_de_Informatica
 
     }
 
-
+    //CLASSE VENDA
     class Venda
     {
         public List<Cliente> nomeCliente { get; set; }
@@ -194,42 +406,9 @@ namespace Loja_de_Informatica
 
         public double valorTotal { get; set; }
 
-        public string MenuVendas()
-        {
-            //Sub-Menus
-            //Vendas
-            string opcao;
-
-            if (opcao == "1")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("VENDAS:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Nova Venda!");
-                Console.WriteLine("2-Buscar Venda!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("VENDAS:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Nova Venda!");
-                    Console.WriteLine("2-Buscar Venda!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
-
-                return opcao;
-             
-            }
-        }
-
     }
 
-
+    //CLASSE DO PROGRAMA
     internal class Program
     {
 
@@ -248,95 +427,15 @@ namespace Loja_de_Informatica
 
         static public List<Venda> vendas = new List<Venda>();
 
-
+        //MÉTODO DO PROGRAMA
         static void Main(string[] args)
         {
 
-            MenuPrincipal menuPrincipal = new MenuPrincipal();
-            menuPrincipal.OpcaoMenu();
+            Menu menu = new Menu();
+            menu.OpcaoMenu();
 
 
-            //Sub-Menus
-            //Vendas
-            if (opcao == "1")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("VENDAS:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Nova Venda!");
-                Console.WriteLine("2-Buscar Venda!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("VENDAS:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Nova Venda!");
-                    Console.WriteLine("2-Buscar Venda!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
-
-                //Cadastrar
-                if (opcao == "1")
-                {
-
-                }
-                //Buscar
-                else if (opcao =="2")
-                {
-
-                }
-            }
-            //Compras
-            else if (opcao == "2")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("COMPRAS:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Nova Compra!");
-                Console.WriteLine("2-Buscar Compra!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("COMPRAS:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Nova Compra!");
-                    Console.WriteLine("2-Buscar Compra!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
-
-            }
-            //Clientes
-            else if (opcao == "3")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("CLIENTES:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Novo Cliente!");
-                Console.WriteLine("2-Buscar Cliente!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("CLIENTES:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Novo Cliente!");
-                    Console.WriteLine("2-Buscar Cliente!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
+            
 
                 //Cadastrar (nome, telefone, CPF, nCompras, quantidadeCli)
                 if (opcao == "1")
@@ -373,81 +472,8 @@ namespace Loja_de_Informatica
 
                     Console.WriteLine("BUSCAR CLIENTE:\n");
 
-
-
                 }
             }
-            //Funcionários
-            else if (opcao =="4")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("FUNCIONÁRIOS:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Novo Funcionário!");
-                Console.WriteLine("2-Buscar Funcionário!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("FUNCIONÁRIOS:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Novo Funcionário!");
-                    Console.WriteLine("2-Buscar Funcionário!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
-            }
-            //Fornecedores
-            else if (opcao == "5")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("FORNECEDORES:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Novo Funcionário!");
-                Console.WriteLine("2-Buscar Funcionário!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("FORNECEDORES:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Novo Funcionário!");
-                    Console.WriteLine("2-Buscar Funcionário!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
-            }
-            //Produtos
-            else if (opcao == "6")
-            {
-                Console.WriteLine(nomeLoja);
-                Console.WriteLine("PRODUTOS:\n");
-                Console.WriteLine("Informe:\n ");
-                Console.WriteLine("1-Novo Produto!");
-                Console.WriteLine("2-Buscar Produto!");
-                opcao = Console.ReadLine();
-
-                while (opcao != "1" && opcao != "2")
-                {
-                    Console.Clear();
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("PRODUTOS:\n");
-                    Console.WriteLine(opcaoErro);
-                    Console.WriteLine("Informe:\n");
-                    Console.WriteLine("1-Novo Produto!");
-                    Console.WriteLine("2-Buscar Produto!");
-                    opcao = Console.ReadLine();
-                }
-                Console.Clear();
-            }
-
-
 
 
             //Funcionários
