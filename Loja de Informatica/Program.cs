@@ -19,7 +19,7 @@ namespace Loja_de_Informatica
         internal static string opcao2 { get; set; }
 
         //MÉTODO MENU
-        public string OpcaoMenu()
+        public string ExibirMenuPrincipal()
         {
             opcao = "0";
 
@@ -53,7 +53,12 @@ namespace Loja_de_Informatica
                     opcao = Console.ReadLine();
                 }
             }
-            //MENU VENDAS
+
+        //MENU VENDAS
+        Public string ExibirMenuVenda ()
+            {
+
+            }
             else if (opcao == "1")
             {
                 opcao2 = "venda";
@@ -210,7 +215,46 @@ namespace Loja_de_Informatica
 
     }
 
-    //CLASSE CADASTRO
+    //CLASSE SISTEMA DA LOJA
+    class SistemaLoja
+    {
+        //estaciando as listas de todos os objetos que irei precisar no meu sistema
+        private List<Funcionario> _funcionarios = new List<Funcionario>();
+
+        private List<Fornecedor> _fornecedores = new List<Fornecedor>();
+
+        private List<Cliente> _clientes = new List<Cliente>();
+
+        private List<Produto> _produtos = new List<Produto>();
+
+        private List<NotaFiscal> _notaFiscais = new List<NotaFiscal>();
+
+        private List<Compra> _compras = new List<Compra>();
+
+        private List<Venda> _vendas = new List<Venda>();
+
+
+
+        private void CadastrarFuncionario ()
+        {
+            Funcionario funcionario = new Funcionario();
+
+            funcionario.Nome = Console.ReadLine();
+            funcionario.Telefone = Console.ReadLine();
+            funcionario.CPF = Console.ReadLine();
+            funcionario.Funcao = Console.ReadLine();
+            double.TryParse(Console.ReadLine(), out double salario);
+            funcionario.Salario = salario;
+            funcionario.QuantidadeFunc++;
+
+            _funcionarios.Add(funcionario);
+        }
+
+        private 
+
+
+
+    }
 
 
     //CLASSE FUNCIONÁRIO
@@ -244,9 +288,10 @@ namespace Loja_de_Informatica
         }
         */
 
-        //MÉTODO CADASTRO
+        //MÉTODOS CADASTRO
         private void Cadastro()
         {
+
             public List<Cliente> nomeCliente { get; set; }
 
             public List<Cliente> foneCliente { get; set; }
@@ -412,20 +457,7 @@ namespace Loja_de_Informatica
     internal class Program
     {
 
-        //estaciando as listas de todos os objetos que irei precisar no meu sistema
-        static public List<Funcionario> funcionarios = new List<Funcionario>();
 
-        static public List<Fornecedor> fornecedores = new List<Fornecedor>();
-
-        static public List<Cliente> clientes = new List<Cliente>();
-
-        static public List<Produto> produtos = new List<Produto>();
-
-        static public List<NotaFiscal> notaFiscais = new List<NotaFiscal>();
-
-        static public List<Compra> compras = new List<Compra>();
-
-        static public List<Venda> vendas = new List<Venda>();
 
         //MÉTODO DO PROGRAMA
         static void Main(string[] args)
