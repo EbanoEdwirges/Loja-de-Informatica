@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 
@@ -234,23 +236,154 @@ namespace Loja_de_Informatica
         private List<Venda> _vendas = new List<Venda>();
 
 
-
+        //MÉTODO CADASTRAR FUNCIONÁRIOO
         private void CadastrarFuncionario ()
         {
             Funcionario funcionario = new Funcionario();
 
+            Console.Write("Nome: ");
             funcionario.Nome = Console.ReadLine();
+            Console.Write("Telefone: ");
             funcionario.Telefone = Console.ReadLine();
+            Console.Write("CPF: ");
             funcionario.CPF = Console.ReadLine();
+            Console.Write("Função: ");
             funcionario.Funcao = Console.ReadLine();
-            double.TryParse(Console.ReadLine(), out double salario);
+
+            Console.Write("Salário: ");
+            double salario;
+            while (!double.TryParse(Console.ReadLine(), out salario))
+            {
+                Console.Write("Salário inválido! Informe valor correto: ");
+            }
             funcionario.Salario = salario;
-            funcionario.QuantidadeFunc++;
 
             _funcionarios.Add(funcionario);
         }
 
-        private 
+        //MÉTODO LISTAR FUNCIONÁRIOS
+        private void ListarFuncionarios()
+        {
+
+            if (_funcionarios.Count == 0)
+            {
+                Console.WriteLine("Não existe funcionário cadastrado");
+
+                return;
+            }
+            //foreach está dizendo, Para cada funcionário existente dentro de _funcionarios: pegue esse funcionário e mostre seus dados(Nome, Telefone, Funcão)
+            foreach (Funcionario funcionario in _funcionarios)
+            {
+                Console.WriteLine($"Nome: {funcionario.Nome}");
+                Console.WriteLine($"Telefone: {funcionario.Telefone}");
+                Console.WriteLine($"Função: {funcionario.Funcao}");
+            }
+        }
+
+
+        //MÉTODO BUSCAR FUNCIONÁRIO PELO CPF
+        private Funcionario BuscarFuncionarioPorCPF(string cpf)
+        {
+            foreach (Funcionario funcionario in _funcionarios)
+            {
+                if (funcionario.CPF == cpf)
+                {
+                    return funcionario;
+                }
+            }
+            return null;
+        }
+
+
+        //REMOVER FUNCIONARIO
+        private void RemoverFuncionario()
+        {
+            Console.Write("Informe CPF: ");
+            string cpf = Console.ReadLine();
+
+            Funcionario funcionario = BuscarFuncionarioPorCPF(cpf);
+            if (funcionario == null)
+            {
+                Console.WriteLine("Funcionário não encoontrado!");
+
+                return;
+            }
+            _funcionarios.Remove(funcionario);
+            Console.WriteLine("Funcionário removido!");
+        }
+
+
+        //EDITAR FUNCIONÁRIO
+        //Nome, Telefone, CPF, Função e Salário
+        private void EditarFuncionario ()
+        {
+            Console.WriteLine("Informe CPF: ");
+            string cpf = Console.ReadLine();
+
+            Funcionario funcionario = BuscarFuncionarioPorCPF(cpf);
+
+            if (funcionario == null)
+            {
+                Console.WriteLine("Funcionário não encontrado!");
+                
+                return;
+            }
+
+            //NOME
+            Console.WriteLine("Informe novo nome para editar ou precione ENTER para próximo atributo!");
+            Console.Write($"Nome ({funcionario.Nome}): ");
+
+            string nome = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(nome))
+            {
+                funcionario.Nome = nome;
+            }
+
+            //TELEFONE
+            Console.Write($"Telefone ({funcionario.Telefone}): ");
+
+            string telefone = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(telefone))
+            {
+                funcionario.Telefone = telefone;
+            }
+
+            //CPF
+            Console.Write($"CPF ({funcionario.CPF}): ");
+
+            string Cpf = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(Cpf))
+            {
+                funcionario.CPF = Cpf;
+            }
+
+            //FUNÇÃO
+            Console.Write($"Função ({funcionario.Funcao}): ");
+
+            string funcao = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(funcao))
+            {
+                funcionario.Funcao = funcao;
+            }
+
+            //SALÁRIO
+            Console.Write($"Salário ({funcionario.Salario}): ");
+
+            string entradaSalario = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(entradaSalario))
+            {
+                double salario;
+                while (!double.TryParse(entradaSalario, out salario))
+                {
+                    Console.WriteLine("Salário inválido! Informe valor compatível: ");
+                    entradaSalario = Console.ReadLine();
+                }
+
+                funcionario.Salario = salario;
+            }
+
+            Console.WriteLine("Funcionário editado com sucesso!");
+        }
 
 
 
@@ -270,7 +403,6 @@ namespace Loja_de_Informatica
 
         public double Salario { get; set; }
 
-        public long QuantidadeFunc { get; set; }
 
 
         /*
