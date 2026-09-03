@@ -21,7 +21,7 @@ namespace Loja_de_Informatica
         internal static string opcao2 { get; set; }
 
         //MÉTODO MENU
-        public string ExibirMenuPrincipal()
+        public void ExibirMenuPrincipal()
         {
             opcao = "0";
 
@@ -55,13 +55,12 @@ namespace Loja_de_Informatica
                     opcao = Console.ReadLine();
                 }
             }
+        }
 
         //MENU VENDAS
-        Public string ExibirMenuVenda ()
-            {
-
-            }
-            else if (opcao == "1")
+        public void ExibirMenuVenda()
+        {
+            if (opcao == "1")
             {
                 opcao2 = "venda";
                 Console.WriteLine(nomeLoja);
@@ -85,8 +84,12 @@ namespace Loja_de_Informatica
                 }
                 Console.Clear();
             }
-            //MENU COMPRAS
-            else if (opcao == "2")
+        }
+
+        //MENU COMPRAS
+        public void ExibirMenuCompra()
+        {
+            if (opcao == "2")
             {
                 opcao2 = "compra";
                 Console.WriteLine(nomeLoja);
@@ -110,8 +113,12 @@ namespace Loja_de_Informatica
                 }
                 Console.Clear();
             }
-            //MENU CLIENTES
-            else if (opcao == "3")
+        }
+
+        //MENU CLIENTES
+        public void ExibirMenuCliente()
+        {
+            if (opcao == "3")
             {
                 opcao2 = "cliente";
                 Console.WriteLine(nomeLoja);
@@ -135,8 +142,12 @@ namespace Loja_de_Informatica
                 }
                 Console.Clear();
             }
-            //MENU FUNCIONÁRIOS
-            else if (opcao == "4")
+        }
+
+        //MENU FUNCIONÁRIOS
+        public void ExibirMenuFuncionario()
+        {
+            if (opcao == "4")
             {
                 opcao2 = "funcionario";
                 Console.WriteLine(nomeLoja);
@@ -160,8 +171,12 @@ namespace Loja_de_Informatica
                 }
                 Console.Clear();
             }
-            //MENU FORNECEDORES
-            else if (opcao == "5")
+        }
+
+        //MENU FORNECEDORES
+        public void ExibirMenuFornecedor()
+        {
+            if (opcao == "5")
             {
                 opcao2 = "fornecedor";
                 Console.WriteLine(nomeLoja);
@@ -185,8 +200,12 @@ namespace Loja_de_Informatica
                 }
                 Console.Clear();
             }
-            //MENU PRODUTOS
-            else if (opcao == "6")
+        }
+
+        //MENU PRODUTOS
+        public void ExibirMenuProduto()
+        {
+            if (opcao == "6")
             {
                 opcao2 = "produto";
                 Console.WriteLine(nomeLoja);
@@ -210,12 +229,10 @@ namespace Loja_de_Informatica
                 }
                 Console.Clear();
             }
-            Console.Clear();
-
-            return opcao;
         }
 
     }
+
 
     //CLASSE SISTEMA DA LOJA
     class SistemaLoja
@@ -236,8 +253,10 @@ namespace Loja_de_Informatica
         private List<Venda> _vendas = new List<Venda>();
 
 
+
+        //MÉTODOS SISTEMA LOJA PARA FUNCIONÁRIO
         //MÉTODO CADASTRAR FUNCIONÁRIOO
-        private void CadastrarFuncionario ()
+        private void CadastrarFuncionario()
         {
             Funcionario funcionario = new Funcionario();
 
@@ -294,6 +313,25 @@ namespace Loja_de_Informatica
             return null;
         }
 
+        //MÉTODO CONSULTAR FUNCIONÁRIO
+        private void ConsultarFuncionarioCPF()
+        {
+            Console.Write($"Informe CPF: ");
+            string cpf = Console.ReadLine();
+
+            Funcionario funcionario = BuscarFuncionarioPorCPF(cpf);
+
+            if(funcionario == null)
+            {
+                Console.WriteLine("Funcionario não encontrado!");
+
+                return;
+            }
+            Console.WriteLine($"Nome: {funcionario.Nome}");
+            Console.WriteLine($"Telefone: {funcionario.Telefone}");
+            Console.WriteLine($"Função: {funcionario.Funcao}");
+        }
+
 
         //REMOVER FUNCIONARIO
         private void RemoverFuncionario()
@@ -304,7 +342,7 @@ namespace Loja_de_Informatica
             Funcionario funcionario = BuscarFuncionarioPorCPF(cpf);
             if (funcionario == null)
             {
-                Console.WriteLine("Funcionário não encoontrado!");
+                Console.WriteLine("Funcionário não encontrado!");
 
                 return;
             }
@@ -315,7 +353,7 @@ namespace Loja_de_Informatica
 
         //EDITAR FUNCIONÁRIO
         //Nome, Telefone, CPF, Função e Salário
-        private void EditarFuncionario ()
+        private void EditarFuncionario()
         {
             Console.WriteLine("Informe CPF: ");
             string cpf = Console.ReadLine();
@@ -325,15 +363,17 @@ namespace Loja_de_Informatica
             if (funcionario == null)
             {
                 Console.WriteLine("Funcionário não encontrado!");
-                
+
                 return;
             }
 
             //NOME
-            Console.WriteLine("Informe novo nome para editar ou precione ENTER para próximo atributo!");
+            Console.WriteLine("Informe novo valor para editar ou precione ENTER para próximo campo!\n");
             Console.Write($"Nome ({funcionario.Nome}): ");
 
             string nome = Console.ReadLine();
+            //verifica se parâmetro é "nulo", "vazio" ou "apenas espaços"
+            // e "!" inverte valor booleano (true para false ou false para true)
             if (!string.IsNullOrWhiteSpace(nome))
             {
                 funcionario.Nome = nome;
@@ -387,7 +427,77 @@ namespace Loja_de_Informatica
 
 
 
-    }
+        //MÉTODOS SISTEMA LOJA PARA FORNECEDOR
+        //MÉTODO CADASTRAR FORNECEDOR
+        private void CadastrarFornecedor()
+        {
+            Fornecedor fornecedor = new Fornecedor();
+
+            Console.Write("Nome: ");
+            fornecedor.Nome = Console.ReadLine();
+
+            Console.Write("Telefone: ");
+            fornecedor.Telefone = Console.ReadLine();
+
+            Console.Write("CNPJ: ");
+            fornecedor.CNPJ = Console.ReadLine();
+
+            _fornecedores.Add(fornecedor);
+
+            Console.WriteLine("Fornecedor cadastrado com sucesso!");
+        }
+
+        //LISTAR FORNECEDORES
+        private void ListarFornecedores()
+        {
+            if (_fornecedores.Count == 0)
+            {
+                Console.WriteLine("Não existe Fornecedor cadastrado!");
+
+                return;
+            }
+            foreach (Fornecedor fornecedor in _fornecedores)
+            {
+                Console.Write($"Nome: ({fornecedor.Nome})");
+                Console.Write($"Telefone: ({fornecedor.Telefone})");
+                Console.Write($"CNPJ: ({fornecedor.CNPJ})");
+            }
+        }
+
+        //BUSCAR FORNECEDOR POR CNPJ
+        private Fornecedor BuscarFornecedorPorCNPJ(string cnpj)
+        {
+            foreach(Fornecedor fornecedor in _fornecedores)
+            {
+                if (fornecedor.CNPJ == cnpj)
+                {
+                    return fornecedor;
+                }
+            }
+            return null;
+        }
+
+        //CONSULTAR FORNECEDOR
+        private void ConsultarFornecedor()
+        {
+            Console.Write("Informe CNPJ: ");
+            string cnpj = Console.ReadLine();
+
+            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(cnpj);
+
+            if (fornecedor == null)
+            {
+                Console.WriteLine("Fornecedor não encontrado!");
+
+                return;
+            }
+            Console.Write($"Nome: {fornecedor.Nome}");
+            Console.Write($"Telefone: {fornecedor.Telefone}");
+        }
+
+
+
+    }//FIM DA CLASSE SISTEMA DA LOJA
 
 
     //CLASSE FUNCIONÁRIO
@@ -403,8 +513,6 @@ namespace Loja_de_Informatica
 
         public double Salario { get; set; }
 
-
-
         /*
         //forma auternativa de declarar métodos Get e Set
         public string Nome
@@ -419,169 +527,106 @@ namespace Loja_de_Informatica
             }
         }
         */
-
-        //MÉTODOS CADASTRO
-        private void Cadastro()
-        {
-
-            public List<Cliente> nomeCliente { get; set; }
-
-            public List<Cliente> foneCliente { get; set; }
-
-            public List<Cliente> cpfCliente { get; set; }
-
-            //verificar nCompras para confirmar se cliente ativo ou não e fornecer desconto se cliente com X compras
-            private List<Cliente> nComprasCliente { get; set; }
-
-            public List<Produto> idProduto { get; set; }
-
-            public List<Produto> nomeProduto { get; set; }
-
-            public List<Produto> ValorVenda { get; set; }
-
-            public long qtdVenda { get; set; }
-
-            public double valorTotal { get; set; }
-
-            if (Menu.opcao2 == "1")
-            {
-                Clientes List<Cliente>  = new List<Cliente>();
-
-                Cliente cliente = new Cliente();
-
-                Console.WriteLine(Menu.nomeLoja);
-                Console.WriteLine("CADASTRO CLIENTE:\n");
-                Console.WriteLine("Informe\n\n");
-                Console.WriteLine("Nome do Cliente: ");
-                cliente.nome = Console.ReadLine();
-                Console.WriteLine("Telefone: ");
-                cliente.telefone = Console.ReadLine();
-                Console.WriteLine("CPF: ");
-                cliente.CPF = Console.ReadLine();
-
-                clientes.Add(cliente);
-
-
-
-                Console.WriteLine(cliente.nome);
-                Console.WriteLine(cliente.telefone);
-                Console.WriteLine(cliente.CPF);
-            }
-            else if ()
-            {
-
-            }
-        }
-
-
-
     }
 
     class Fornecedor
     {
-        public string nome { get; set; }
+        public string Nome { get; set; }
 
-        public string telefone { get; set; }
+        public string Telefone { get; set; }
 
         public string CNPJ { get; set; }
-
-        public long quantidadeForn { get; set; }
-
     }
 
     //CLASSE CLIENTE
     class Cliente
     {
-        public string nome { get; set; }
+        public string Nome { get; set; }
 
-        public string telefone { get; set; }
+        public string Telefone { get; set; }
 
         public string CPF { get; set; }
 
         //incrementar +1 sempre que cliente realizar uma compra
-        public long nCompras { get; set; }
-
-        public long quantidadeCli { get; set; }
-
-
+        public long NCompras { get; set; }
     }
 
     //CLASSE PRODUTO
     class Produto
     {
-        public long id { get; set; }
+        public long Id { get; set; }
 
-        public string categoria { get; set; }
+        public string Categoria { get; set; }
 
-        public string nome { get; set; }
+        public string Nome { get; set; }
 
-        private Fornecedor nomeFornecedor { get; set; }
+        private Fornecedor NomeFornecedor { get; set; }
 
-        public double valorCompra { get; set; }
+        public double ValorCompra { get; set; }
 
-        public double valorVenda { get; set; }
+        public double ValorVenda { get; set; }
 
-        static public long estoque { get; set; }
+        static public long Estoque { get; set; }
 
     }
 
     //CLASSE NOTA FISCAL
     class NotaFiscal
     {
-        public long id { get; set; }
+        public long Id { get; set; }
 
-        public List<Produto> idProduto { get; set; }
+        public List<Produto> IdProduto { get; set; }
 
-        public List<Produto> nomeProdutos { get; set; }
+        public List<Produto> NomeProdutos { get; set; }
 
-        public List<Produto> valorVenda { get; set; }
+        public List<Produto> ValorVenda { get; set; }
 
-        public double valorTotal { get; set; }
+        public double ValorTotal { get; set; }
 
     }
 
     //CLASSE COMPRA
     class Compra
     {
-        public List<Fornecedor> nomeFornecedor { get; set; }
+        public List<Fornecedor> NomeFornecedor { get; set; }
 
-        public List<Fornecedor> foneFornecedor { get; set; }
+        public List<Fornecedor> FoneFornecedor { get; set; }
 
-        public List<Fornecedor> cnpjFornecedor { get; set; }
+        public List<Fornecedor> CnpjFornecedor { get; set; }
 
-        public List<Produto> idProduto { get; set; }
+        public List<Produto> IdProduto { get; set; }
 
-        public List<Produto> nomeProduto { get; set; }
+        public List<Produto> NomeProduto { get; set; }
 
-        public List<Produto> valorCompra { get; set; }
+        public List<Produto> ValorCompra { get; set; }
 
-        public long qtdCompra { get; set; }
+        public long QtdCompra { get; set; }
 
-        public double valorTotal { get; set; }
+        public double ValorTotal { get; set; }
 
     }
 
     //CLASSE VENDA
     class Venda
     {
-        public List<Cliente> nomeCliente { get; set; }
+        public List<Cliente> NomeCliente { get; set; }
 
-        public List<Cliente> foneCliente { get; set; }
+        public List<Cliente> FoneCliente { get; set; }
 
-        public List<Cliente> cpfCliente { get; set; }
+        public List<Cliente> CpfCliente { get; set; }
 
         //verificar nCompras para confirmar se cliente ativo ou não e fornecer desconto se cliente com X compras
-        private List<Cliente> nComprasCliente { get; set; }
+        private List<Cliente> NComprasCliente { get; set; }
 
-        public List<Produto> idProduto { get; set; }
+        public List<Produto> IdProduto { get; set; }
 
-        public List<Produto> nomeProduto { get; set; }
+        public List<Produto> NomeProduto { get; set; }
 
         public List<Produto> ValorVenda { get; set; }
 
-        public long qtdVenda { get; set; }
+        public long QtdVenda { get; set; }
 
-        public double valorTotal { get; set; }
+        public double ValorTotal { get; set; }
 
     }
 
@@ -589,109 +634,16 @@ namespace Loja_de_Informatica
     internal class Program
     {
 
-
-
         //MÉTODO DO PROGRAMA
         static void Main(string[] args)
         {
-
             Menu menu = new Menu();
-            menu.OpcaoMenu();
-
-
-            
-
-                //Cadastrar (nome, telefone, CPF, nCompras, quantidadeCli)
-                if (opcao == "1")
-                {
-                    Cliente cliente = new Cliente();
-
-                    Console.WriteLine(nomeLoja);
-                    Console.WriteLine("CADASTRO CLIENTE:\n");
-                    Console.WriteLine("Informe\n\n");
-                    Console.WriteLine("Nome do Cliente: ");
-                    cliente.nome = Console.ReadLine();
-                    Console.WriteLine("Telefone: ");
-                    cliente.telefone = Console.ReadLine();
-                    Console.WriteLine("CPF: ");
-                    cliente.CPF = Console.ReadLine();
-
-                    clientes.Add(cliente);
-
-
-
-                    Console.WriteLine(cliente.nome);
-                    Console.WriteLine(cliente.telefone);
-                    Console.WriteLine(cliente.CPF);
-
-                }
-                //Buscar
-                else if (opcao == "2")
-                {
-                    Cliente cliente = new Cliente();
-                    cliente.nome = "Ebano da Silva Edwirges";
-                    cliente.telefone = "986734227";
-                    cliente.CPF = "019397873";
-                    clientes.Add(cliente);
-
-                    Console.WriteLine("BUSCAR CLIENTE:\n");
-
-                }
-            }
-
-
-            //Funcionários
-            //Funcionários.Cadastrar
-
-            /*
-            while (true)
-            {
-                //variável "funcionário" armazena uma referência para objeto criado da Classe Funcionário
-                //Add(funcionario), armazena a referência "funcionario a lista "funcionarios", e ao final do escopo em "}", a variável "funcionário" deixa de existir, mas a referência "funcionário" já foi guardada dentro da lista "funcionarios"
-                //Ao iniciar novamente o "while" a variável "funcionário" poderá ser utilizada novamente e a referência para o primeiro objeto criado permanece guardado na lista "funcionários"
-                
-                Funcionario funcionario = new Funcionario();
-                funcionario.Nome = "Joao";
-                funcionarios.Add(funcionario);
-            }
-            */
-
-
-            //Funcionários.Consultar
-
-
-
-            //Fornecedores
-            //Fornecedores.Cadastrar
-            //Fornecedores.Consultar
-
-            //Produtos
-            //Produtos.Cadastrar
-            //Produtos.Consultar
-
-            //Clientes
-            //Clientes.Cadastrar
-            //Clientes.Consultar
-
-            //Compras
-            //Compras.Cadastrar
-            //Compras.Consultar
-
-            //Vendas
-            //Vendas.Cadastrar
-            //Vendas.Consultar
-
-            //Nota Fiscal
-            //Nota Fiscal.Cadastrar
-            //Nota Fiscal.Consultar
-
-
-
-
-
+            menu.ExibirMenuPrincipal();
 
 
             Console.ReadKey();
         }
+
+    
     }
 }
