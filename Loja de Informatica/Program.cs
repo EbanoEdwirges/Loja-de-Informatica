@@ -4,6 +4,7 @@ using System.Data;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.Xml;
 
 namespace Loja_de_Informatica
 {
@@ -252,6 +253,8 @@ namespace Loja_de_Informatica
 
         private List<Venda> _vendas = new List<Venda>();
 
+        private List<string> _categoriasProdutos = new List<string>();
+
 
 
         //MÉTODOS SISTEMA LOJA PARA FUNCIONÁRIO
@@ -347,7 +350,7 @@ namespace Loja_de_Informatica
                 return;
             }
             _funcionarios.Remove(funcionario);
-            Console.WriteLine("Funcionário removido!");
+            Console.WriteLine("Funcionário removido com sucesso!");
         }
 
 
@@ -460,7 +463,7 @@ namespace Loja_de_Informatica
             {
                 Console.Write($"Nome: ({fornecedor.Nome})");
                 Console.Write($"Telefone: ({fornecedor.Telefone})");
-                Console.Write($"CNPJ: ({fornecedor.CNPJ})");
+                Console.Write($"CNPJ: ({fornecedor.CNPJ})\n");
             }
         }
 
@@ -495,6 +498,348 @@ namespace Loja_de_Informatica
             Console.Write($"Telefone: {fornecedor.Telefone}");
         }
 
+        //REMOVER FORNECEDOR
+        private void RemoverFornecedor()
+        {
+            Console.Write("Informe CNPJ: ");
+            string cnpj = Console.ReadLine();
+
+            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(cnpj);
+
+            if (fornecedor == null)
+            {
+                Console.WriteLine("Fornecedor não encontrado!");
+
+                return;
+            }
+            _fornecedores.Remove(fornecedor);
+
+            Console.WriteLine("Fornecedor foi removido com sucesso!");
+        }
+
+        //EDITAR FORNECEDOR
+        private void EditarFOrnecedor()
+        {
+            //LOCALIZAR FORNECEDOR
+            Console.Write("Informe CNPJ: ");
+            string cnpj = Console.ReadLine();
+
+            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(cnpj);
+
+            if(fornecedor == null)
+            {
+                Console.WriteLine("Fornecedor não encontrado!");
+
+                return;
+            }
+
+            //NOME
+            Console.WriteLine("Informe novo valor ou precione ENTER para próximo campo!\n");
+            Console.WriteLine($"Nome: ({fornecedor.Nome}): ");
+            string nome = Console.ReadLine();
+
+            if(!string.IsNullOrWhiteSpace(nome))
+            {
+                fornecedor.Nome = nome;
+            }
+
+            //TELEFONE
+            Console.WriteLine($"Telefone: ({fornecedor.Telefone}): ");
+            string telefone = Console.ReadLine();
+
+            if(!string.IsNullOrWhiteSpace(telefone))
+            {
+                fornecedor.Telefone = telefone;
+            }
+
+            //CNPJ
+            Console.WriteLine("CNPJ: ");
+            string Cnpj = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(Cnpj))
+            {
+                fornecedor.CNPJ = Cnpj;
+            }
+            Console.WriteLine("Fornecedor editado com sucesso!");
+
+        }
+
+
+        //MÉTODOS SISTEMA LOJA PARA CLIENTE
+        //CADASTRAR CLIENTE
+        private void CadastrarCLiente()
+        {
+            Cliente cliente = new Cliente();
+
+            Console.WriteLine("Nome: ");
+            cliente.Nome = Console.ReadLine();
+
+            Console.WriteLine("Telefone: ");
+            cliente.Telefone = Console.ReadLine();
+
+            Console.WriteLine("CPF: ");
+            cliente.CPF = Console.ReadLine();
+
+            _clientes.Add(cliente);
+
+            Console.WriteLine("Cliente cadastrado com sucesso!");
+        }
+
+        //LISTAR CLIENTES
+        private void ListarCLientes()
+        {
+            if(_clientes.Count == 0)
+            {
+                Console.WriteLine("Não existe cliente cadastrado!");
+
+                return;
+            }
+
+            foreach(Cliente cliente in _clientes)
+            {
+                Console.WriteLine($"Nome: {cliente.Nome}");
+                Console.WriteLine($"Telefone: {cliente.Telefone}");
+                Console.WriteLine($"CPF: {cliente.CPF}\n");
+            }
+        }
+
+        //BUSCAR CLIENTE
+        private Cliente BuscarClientePorCPF (string cpf)
+        {
+            foreach(Cliente cliente in _clientes)
+            {
+                if(cliente.CPF == cpf)
+                {
+                    return cliente;
+                }
+            }
+            return null;
+        }
+
+        //CONSULTAR CLIENTE
+        private void ConsultarCliente()
+        {
+            Console.Write("InformeCPF: ");
+            string cpf = Console.ReadLine();
+
+            Cliente cliente = BuscarClientePorCPF(cpf);
+
+            if(cliente == null)
+            {
+                Console.WriteLine("Cliente não encontrado!");
+
+                return;
+            }
+            Console.WriteLine($"Nome: {cliente.Nome}");
+            Console.WriteLine($"Telefone: {cliente.Telefone}");
+        }
+
+        //REMOVER CLIENTE
+        private void RemoverCLiente()
+        {
+            Console.WriteLine("Informe CPF: ");
+            string cpf = Console.ReadLine();
+
+            Cliente cliente = BuscarClientePorCPF(cpf);
+
+            if (cliente == null)
+            {
+                Console.WriteLine("Cliente não encontrado!");
+
+                return;
+            }
+            _clientes.Remove(cliente);
+
+            Console.WriteLine("Cliente removido com sucesso!");
+        }
+
+        //EDITAR CLIENTE
+        private void EditarCliente()
+        {
+            //LOCALIZAR CLIENTE
+            Console.WriteLine("Informe CPF: ");
+            string cpf = Console.ReadLine();
+
+            Cliente cliente = BuscarClientePorCPF(cpf);
+
+            if(cliente == null)
+            {
+                Console.WriteLine("Cliente não encontrado!");
+
+                return;
+            }
+            Console.WriteLine("Informe novo falor ou ENTER para próximo campo!\n");
+
+            //NOME
+            Console.Write($"Nome ({cliente.Nome}): ");
+            string nome = Console.ReadLine();
+            if(!string.IsNullOrWhiteSpace(nome))
+            {
+                cliente.Nome = nome;
+            }
+
+            //TELEFONE
+            Console.Write($"Telefone ({cliente.Telefone}): ");
+            string telefone = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(telefone))
+            {
+                cliente.Telefone = telefone;
+            }
+
+            //CPF
+            Console.Write($"CPF: ({cliente.CPF}): ");
+            string Cpf = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(Cpf))
+            {
+                cliente.CPF = Cpf;
+            }
+            Console.WriteLine("Cliente editado com sucesso!");
+        }
+
+        //MÉTODO SISTEMA LOJA PARA CATEGORIA PRODUTO
+        //CADASTRAR CATEGORIA PRODUTO
+        private void CadastrarCategoriaProduto()
+        {
+            Console.WriteLine("Informe Nome: ");
+            string categoriaProduto = Console.ReadLine();
+
+            _categoriaProduto.Add(categoriaProduto);
+
+            Console.WriteLine("Categoria produto cadastrado com sucesso!");
+        }
+
+        //LISTAR CATEGORIAS PRODUTOS
+        private void ListarCategoriasProdutos()
+        {
+            if(_categoriasProdutos.Count == 0)
+            {
+                Console.WriteLine("Não existe Categoria Produto Cadastrado!");
+
+                return;
+            }
+            foreach (string categoriaProduto in _categoriasProdutos)
+            {
+                Console.WriteLine($"Categoria: {categoriaProduto}");
+            }
+
+        }
+
+        //BUSCAR CATEGORIA PRODUTO
+        private string BuscarCategoriaProduto(string nomeCategoriaProduto)
+        {
+            foreach (string categoriaProduto in _categoriasProdutos)
+            {
+                if (categoriaProduto == nomeCategoriaProduto)
+                {
+                    return categoriaProduto;
+                }
+            }
+            return null;
+        }
+
+        //REMOVER CATEGORIA PRODUTO
+        private void RemoverCategoriaProduto()
+        {
+            if(_categoriasProdutos.Count == 0)
+            {
+                Console.WriteLine("Não existe Categoria Produto Cadastrado!");
+
+                return;
+            }
+
+            Console.Write("Informe Nome Categoria: ");
+            string Categoria_Produto = Console.ReadLine();
+
+            string categoriaProduto = BuscarCategoriaProduto(Categoria_Produto);
+
+            if(categoriaProduto == null)
+            {
+                Console.WriteLine("Categoria de Produto NÃO encontrado!");
+
+                return;
+            }
+            _categoriasProdutos.Remove(categoriaProduto);
+            Console.WriteLine("Categoria Produto removido com sucesso!");  
+        }
+
+
+        //MÉTODO SISTEMA LOJA PARA PRODUTO
+        //CADASTRO PRODUTO
+        private void CadastrarProduto()
+        {
+            //VERIFICAR SE EXISTE CATEGORIA PRODUTO CADASTRADA
+            if (_categoriasProdutos.Count == 0)
+            {
+                Console.WriteLine("Não existe categoria de Produtos cadastrado!");
+                Console.WriteLine("Necessário cadastrar categoria produto antes, para depois cadastrar o produto.");
+
+                return;
+            }
+
+            //VERIFICAR SE EXISTE FORNECEDOR CADASTRADO
+            if(_fornecedores.Count == 0)
+            {
+                Console.WriteLine("Não existe fornecedor cadastrado!");
+                Console.WriteLine("Necessário cadastrar fornecedor, para depois cadastrar protudo.");
+
+                return;
+            }
+
+            //NOVO PRODUTO
+            Produto produto = new Produto();
+            
+            //CATEGORIA DO PRODUTO
+            Console.WriteLine("Informe uma das categorias a baixo: \n");
+            ListarCategoriasProdutos();
+            Console.Write("Categoria: ");
+            string nomeCategoriaProduto = Console.ReadLine();
+
+            string categoriaProduto = null;
+
+            while(categoriaProduto == null)
+            {
+                Console.WriteLine("Categoria não encontrada.");
+                Console.WriteLine("Informe uma das categorias a baixo: \n");
+                ListarCategoriasProdutos();
+                categoriaProduto = BuscarCategoriaProduto(nomeCategoriaProduto);
+            }
+            produto.Categoria = categoriaProduto;
+
+            //FORNECEDOR DO PRODUTO
+            Console.WriteLine("Informe CNPJ de um Fornecedor a baixo: ");
+            ListarFornecedores();
+
+            string cnpjFornecedor = Console.ReadLine();
+
+            Fornecedor fornecedor = null;
+
+            while(fornecedor == null)
+            {
+                Console.WriteLine("Fornecedor não localizado!");
+                Console.WriteLine("Informe CNPJ de um dos Fornecedores a baixo: ");
+                fornecedor = BuscarFornecedorPorCNPJ(cnpjFornecedor);
+            }
+            produto.Fornecedor = fornecedor;
+
+
+            //NOME PRODUTO
+            Console.WriteLine("Nome: ");
+            produto.Nome = Console.ReadLine();
+
+            //VALOR DE COMPRA PRODUTO
+            Console.WriteLine("Valor de Compra: ");
+            double.TryParse(Console.ReadLine(), out double valorDaCompra);
+            produto.ValorCompra = valorDaCompra;
+
+            //VALOR DE VENDA PRODUTO
+            Console.WriteLine("Valor de Venda: ");
+            double.TryParse(Console.ReadLine(), out double valorDaVenda);
+            produto.ValorVenda = valorDaVenda;
+
+            
+
+
+        }
 
 
     }//FIM DA CLASSE SISTEMA DA LOJA
@@ -550,6 +895,7 @@ namespace Loja_de_Informatica
         //incrementar +1 sempre que cliente realizar uma compra
         public long NCompras { get; set; }
     }
+
 
     //CLASSE PRODUTO
     class Produto
