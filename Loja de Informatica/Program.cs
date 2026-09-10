@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Xml;
@@ -255,6 +256,8 @@ namespace Loja_de_Informatica
 
         private List<string> _categoriasProdutos = new List<string>();
 
+        private List<ModeloProduto> _modelosProdutos = new List<ModeloProduto>();
+
 
 
         //MÉTODOS SISTEMA LOJA PARA FUNCIONÁRIO
@@ -302,13 +305,25 @@ namespace Loja_de_Informatica
             }
         }
 
-
         //MÉTODO BUSCAR FUNCIONÁRIO PELO CPF
         private Funcionario BuscarFuncionarioPorCPF(string cpf)
         {
             foreach (Funcionario funcionario in _funcionarios)
             {
                 if (funcionario.CPF == cpf)
+                {
+                    return funcionario;
+                }
+            }
+            return null;
+        }
+
+        //BUSCAR FUNCIONÁRIO PELO NOME
+        private Funcionario BuscarFuncionarioPorNome(string nome)
+        {
+            foreach(Funcionario funcionario in _funcionarios)
+            {
+                if(funcionario.Nome == nome)
                 {
                     return funcionario;
                 }
@@ -335,6 +350,22 @@ namespace Loja_de_Informatica
             Console.WriteLine($"Função: {funcionario.Funcao}");
         }
 
+        //CONSULTAR FUNCIONARIO PELO NOME
+        private void ConsultarFuncionarioNome()
+        {
+            Console.Write("Informe Nome: ");
+            Funcionario funcionario = BuscarFuncionarioPorNome(Console.ReadLine());
+
+            if(funcionario == null)
+            {
+                Console.WriteLine("Funcionario não encontrado");
+
+                return;
+            }
+            Console.Write($"Nome: {funcionario.Nome}");
+            Console.Write($"Telefone: {funcionario.Telefone}");
+            Console.Write($"CPF: {funcionario.Funcao}");
+        }
 
         //REMOVER FUNCIONARIO
         private void RemoverFuncionario()
@@ -429,7 +460,6 @@ namespace Loja_de_Informatica
         }
 
 
-
         //MÉTODOS SISTEMA LOJA PARA FORNECEDOR
         //MÉTODO CADASTRAR FORNECEDOR
         private void CadastrarFornecedor()
@@ -480,8 +510,21 @@ namespace Loja_de_Informatica
             return null;
         }
 
-        //CONSULTAR FORNECEDOR
-        private void ConsultarFornecedor()
+        //BUSCAR FORNECEDOR POR NOME
+        private Fornecedor BuscarFornecedorPorNome(string nome)
+        {
+            foreach(Fornecedor fornecedor in _fornecedores)
+            {
+                if(fornecedor.Nome == nome)
+                {
+                    return fornecedor;
+                }
+            }
+            return null;
+        }
+
+        //CONSULTAR FORNECEDOR POR CNPJ
+        private void ConsultarFornecedorCNPJ()
         {
             Console.Write("Informe CNPJ: ");
             string cnpj = Console.ReadLine();
@@ -489,6 +532,23 @@ namespace Loja_de_Informatica
             Fornecedor fornecedor = BuscarFornecedorPorCNPJ(cnpj);
 
             if (fornecedor == null)
+            {
+                Console.WriteLine("Fornecedor não encontrado!");
+
+                return;
+            }
+            Console.Write($"Nome: {fornecedor.Nome}");
+            Console.Write($"Telefone: {fornecedor.Telefone}");
+        }
+
+        //CONULTAR FORNECEDOR PELO NOME
+        private void ConsultarFornecedorNome()
+        {
+            Console.Write("Informe Nome: ");
+
+            Fornecedor fornecedor = BuscarFornecedorPorNome(Console.ReadLine());
+
+            if(fornecedor == null)
             {
                 Console.WriteLine("Fornecedor não encontrado!");
 
@@ -603,12 +663,25 @@ namespace Loja_de_Informatica
             }
         }
 
-        //BUSCAR CLIENTE
+        //BUSCAR CLIENTE POR CPF
         private Cliente BuscarClientePorCPF (string cpf)
         {
             foreach(Cliente cliente in _clientes)
             {
                 if(cliente.CPF == cpf)
+                {
+                    return cliente;
+                }
+            }
+            return null;
+        }
+
+        //BUSCAR CLIENTE POR NOME
+        private Cliente BuscarClientePorNome(string nome)
+        {
+            foreach(Cliente cliente in _clientes)
+            {
+                if(cliente.Nome == nome)
                 {
                     return cliente;
                 }
@@ -632,6 +705,23 @@ namespace Loja_de_Informatica
             }
             Console.WriteLine($"Nome: {cliente.Nome}");
             Console.WriteLine($"Telefone: {cliente.Telefone}");
+        }
+
+        //CONSULTAR CLIENTE POR NOME
+        private void ConsultarClienteNome()
+        {
+            Console.Write("Informe Nome: ");
+
+            Cliente cliente = BuscarClientePorNome(Console.ReadLine());
+
+            if(cliente == null)
+            {
+                Console.WriteLine("Cliente não localizado!");
+
+                return;
+            }
+            Console.Write($"Nome: {cliente.Nome}");
+            Console.Write($"Telefone: {cliente.Telefone}");
         }
 
         //REMOVER CLIENTE
@@ -703,7 +793,7 @@ namespace Loja_de_Informatica
             Console.WriteLine("Informe Nome: ");
             string categoriaProduto = Console.ReadLine();
 
-            _categoriaProduto.Add(categoriaProduto);
+            _categoriasProdutos.Add(categoriaProduto);
 
             Console.WriteLine("Categoria produto cadastrado com sucesso!");
         }
@@ -724,8 +814,8 @@ namespace Loja_de_Informatica
 
         }
 
-        //BUSCAR CATEGORIA PRODUTO
-        private string BuscarCategoriaProduto(string nomeCategoriaProduto)
+        //BUSCAR CATEGORIA PRODUTO POR NOME
+        private string BuscarCategoriaProdutoPorNome(string nomeCategoriaProduto)
         {
             foreach (string categoriaProduto in _categoriasProdutos)
             {
@@ -750,7 +840,7 @@ namespace Loja_de_Informatica
             Console.Write("Informe Nome Categoria: ");
             string Categoria_Produto = Console.ReadLine();
 
-            string categoriaProduto = BuscarCategoriaProduto(Categoria_Produto);
+            string categoriaProduto = BuscarCategoriaProdutoPorNome(Categoria_Produto);
 
             if(categoriaProduto == null)
             {
@@ -760,6 +850,32 @@ namespace Loja_de_Informatica
             }
             _categoriasProdutos.Remove(categoriaProduto);
             Console.WriteLine("Categoria Produto removido com sucesso!");  
+        }
+
+        //MÉTODO SISTEMA LOJA PARA MODELO PRODUTO
+        //CADASTRAR MODELO PRODUTO
+        private void CadastrarModeloProduto()
+        {
+            ModeloProduto modeloProduto = new ModeloProduto();
+
+            Console.Write("Nome/Código: ");
+            modeloProduto.Nome_Codigo = Console.ReadLine();
+
+            Console.WriteLine("Informe um dos Fornecedes a baixo!");
+            ListarFornecedores();
+            Console.Write("Fornecedor deste Modelo: ");
+
+            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(Console.ReadLine());
+
+            /*
+            FOI FEITO BUSCAR E CONSULTAR PARA FUNCIONÁRIO, FORNECEDOR E CLIENTE
+            FOI CRIADO CLASSE PARA MODELO PRODUTO
+            ESTÁ SENDO CRIADO MÉTODOS PARA MODELO PRODUTO
+
+
+            */
+
+            _modelosProdutos.Add(modeloProduto);
         }
 
 
@@ -788,55 +904,57 @@ namespace Loja_de_Informatica
             //NOVO PRODUTO
             Produto produto = new Produto();
             
-            //CATEGORIA DO PRODUTO
+            //CADASTRAR CATEGORIA DO PRODUTO
             Console.WriteLine("Informe uma das categorias a baixo: \n");
             ListarCategoriasProdutos();
-            Console.Write("Categoria: ");
-            string nomeCategoriaProduto = Console.ReadLine();
+            Console.Write("Categoria do Produto: ");
 
-            string categoriaProduto = null;
+            string categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
 
-            while(categoriaProduto == null)
+            while (categoriaProduto == null)
             {
                 Console.WriteLine("Categoria não encontrada.");
                 Console.WriteLine("Informe uma das categorias a baixo: \n");
                 ListarCategoriasProdutos();
-                categoriaProduto = BuscarCategoriaProduto(nomeCategoriaProduto);
+                Console.Write("Categoria do Produto");
+                categoriaProduto = BuscarCategoriaProduto(Console.ReadLine());
             }
             produto.Categoria = categoriaProduto;
 
-            //FORNECEDOR DO PRODUTO
-            Console.WriteLine("Informe CNPJ de um Fornecedor a baixo: ");
+            //CADASTRAR FORNECEDOR DO PRODUTO
+            Console.WriteLine("Informe CNPJ de um Fornecedor a baixo: \n");
             ListarFornecedores();
+            Console.Write("Fornecedor do Produto: ");
 
             string cnpjFornecedor = Console.ReadLine();
 
-            Fornecedor fornecedor = null;
+            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(cnpjFornecedor);
 
             while(fornecedor == null)
             {
                 Console.WriteLine("Fornecedor não localizado!");
-                Console.WriteLine("Informe CNPJ de um dos Fornecedores a baixo: ");
+                Console.WriteLine("Informe CNPJ de um dos Fornecedores a baixo: \n");
+                ListarFornecedores();
+                Console.Write("Fornecedor do Produto: ");
                 fornecedor = BuscarFornecedorPorCNPJ(cnpjFornecedor);
             }
-            produto.Fornecedor = fornecedor;
+            produto.NomeFornecedor = fornecedor.Nome;
 
-
-            //NOME PRODUTO
-            Console.WriteLine("Nome: ");
+            //CADASTRAR NOME PRODUTO
+            Console.WriteLine("Nome do Produto: ");
             produto.Nome = Console.ReadLine();
 
-            //VALOR DE COMPRA PRODUTO
+            //CADASTRAR VALOR DE COMPRA PRODUTO
             Console.WriteLine("Valor de Compra: ");
             double.TryParse(Console.ReadLine(), out double valorDaCompra);
             produto.ValorCompra = valorDaCompra;
 
-            //VALOR DE VENDA PRODUTO
+            //CADASTRAR VALOR DE VENDA PRODUTO
             Console.WriteLine("Valor de Venda: ");
             double.TryParse(Console.ReadLine(), out double valorDaVenda);
             produto.ValorVenda = valorDaVenda;
 
-            
+            //CADASTRAR ID PRODUTO
 
 
         }
@@ -900,13 +1018,15 @@ namespace Loja_de_Informatica
     //CLASSE PRODUTO
     class Produto
     {
-        public long Id { get; set; }
-
         public string Categoria { get; set; }
 
-        public string Nome { get; set; }
+        public string nomeModelo { get; set; }
+        
+        public long IdModelo { get; set; }
 
-        private Fornecedor NomeFornecedor { get; set; }
+        public string NomeFornecedor { get; set; }
+
+        public string Nome { get; set; }
 
         public double ValorCompra { get; set; }
 
@@ -916,10 +1036,23 @@ namespace Loja_de_Informatica
 
     }
 
+    class ModeloProduto
+    {
+        public long ID { get; set; } = 100000;
+
+        public string Nome_Codigo { get; set; }
+
+        public string Fabricante { get; set; }
+
+        public string NomeFornecedor { get; set; }
+
+        public static long Estoque { get; set; }
+    }
+
     //CLASSE NOTA FISCAL
     class NotaFiscal
     {
-        public long Id { get; set; }
+        public long Id { get; set; } = 100000;
 
         public List<Produto> IdProduto { get; set; }
 
