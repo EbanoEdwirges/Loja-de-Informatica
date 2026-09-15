@@ -254,9 +254,6 @@ namespace Loja_de_Informatica
 
         private List<CategoriaProduto> _categoriasProdutos = new List<CategoriaProduto>();
 
-        
-
-
 
         //MÉTODOS SISTEMA LOJA PARA FUNCIONÁRIO
         //MÉTODO CADASTRAR FUNCIONÁRIOO
@@ -687,7 +684,7 @@ namespace Loja_de_Informatica
             return null;
         }
 
-        //CONSULTAR CLIENTE
+        //CONSULTAR CLIENTE POR CPF
         private void ConsultarCliente()
         {
             Console.Write("InformeCPF: ");
@@ -791,7 +788,49 @@ namespace Loja_de_Informatica
             CategoriaProduto categoriaProduto = new CategoriaProduto();
 
             Console.WriteLine("Informe Nome: ");
-            categoriaProduto.Nome = Console.ReadLine();
+            string nome = Console.ReadLine();
+
+            //VERIFICAR SE NOME CATEGORIA PRODUTO JÁ EXISTE
+            bool nomeExiste = true;
+
+            while(nomeExiste)
+            {
+                nomeExiste = false;
+
+                foreach(CategoriaProduto categoria in _categoriasProdutos)
+                {
+                    if(categoriaProduto.Nome == nome)
+                    {
+                        nomeExiste = true;
+
+                        break;
+                    }
+                }
+
+                if (nomeExiste)
+                {
+                    Console.WriteLine("Categoria Produto já existe!");
+                    Console.WriteLine("1-Tentar novo nome; ");
+                    Console.WriteLine("0-Retornar.");
+
+                    string opcao = Console.ReadLine();
+
+                    while (opcao != "1" && opcao != "0")
+                    {
+                        Console.WriteLine("1-Tentar novo nome; ");
+                        Console.WriteLine("0-Retornar.");
+                        opcao = Console.ReadLine();
+                    }
+
+                    if (opcao == "0")
+                    {
+                        return;
+                    }
+                    Console.Write("Nome: ");
+                    nome = Console.ReadLine();
+                }
+            }
+            categoriaProduto.Nome = nome;
 
             _categoriasProdutos.Add(categoriaProduto);
 
@@ -851,15 +890,15 @@ namespace Loja_de_Informatica
             Console.WriteLine("Categoria Produto removido com sucesso!");  
         }
 
-        //MÉTODO SISTEMA LOJA PARA MODELO PRODUTO
-        //CADASTRAR MODELO PRODUTO
-        private void CadastrarModeloProduto()
+        //MÉTODO SISTEMA LOJA PARA PRODUTO
+        //CADASTRAR PRODUTO
+        private void CadastrarProduto()
         {
-            //VERIFICAR SE EXISTE ALGUMA CATEGORIA E MODELO JÁ CADASTRADO
+            //VERIFICAR SE EXISTE ALGUMA CATEGORIA E FORNECEDOR JÁ CADASTRADO
             if(_categoriasProdutos.Count == 0)
             {
                 Console.WriteLine("Não existe Categoria de Produto cadastrado!");
-                Console.WriteLine("Necessário cadastrar Categoria antes de cadastrar Modelo!!");
+                Console.WriteLine("Necessário cadastrar Categoria antes de cadastrar Produto!!");
 
                 return;
             }
@@ -867,7 +906,7 @@ namespace Loja_de_Informatica
             if(_fornecedores.Count == 0)
             {
                 Console.WriteLine("Não existe Fornecedor cadasrtrado!");
-                Console.WriteLine("Necessário cadastrar Fornecedor antes de cadastrar Modelo!!");
+                Console.WriteLine("Necessário cadastrar Fornecedor antes de cadastrar Produto!!");
 
                 return;
             }
@@ -881,15 +920,15 @@ namespace Loja_de_Informatica
             if(categoriaProduto == null)
             {
                 Console.WriteLine("Não existe a Categoria informada!");
-                Console.WriteLine("Necessário cadastrar Categoria para depois cadastrar Modelo!!");
+                Console.WriteLine("Necessário cadastrar Categoria para depois cadastrar Produto!!");
 
                 return;
             }
 
-            //CRIAR NOVO MODELO
-            ModeloProduto modeloProduto = new ModeloProduto();
+            //CRIAR NOVO PRODUTO
+            Produto produto = new Produto();
 
-            //FORNECEDOR DESTE MODELO
+            //FORNECEDOR DESTE PRODUTO
             Console.WriteLine("Informe NOME do fornecedor!\n");
             ListarFornecedores();
             Console.Write("\nFornecedor: ");
@@ -902,169 +941,271 @@ namespace Loja_de_Informatica
                 Console.Write("\nFornecedor: ");
                 fornecedor = BuscarFornecedorPorNome(Console.ReadLine());
             }
-            modeloProduto.NomeFornecedor = fornecedor.Nome;
+            produto.NomeFornecedor = fornecedor.Nome;
 
-            //NOME MODELO
+            //NOME PRODUTO
             Console.Write("Nome: ");
             string nome = Console.ReadLine();
 
-            
+            //VERIFICAR SE JÁ EXISTE PRODUTO COM ESTE NOME
+            bool nomeExiste = true;
+            while(nomeExiste)
+            {
+                nomeExiste = false;
 
-
-            //ESTOU TENTAR FINALIZAR MÉTODOS DO MODELO_PRODUTO E NESSE MOMENTO A VERIFICAÇÃO A BAIXO, SE NOME MODELO JÁ POSSUI UM CADASTRO
-
-
-
-            //VERIFICAR SE JÁ EXISTE MODELO COM ESTE NOME
-            while (modeloProduto.Nome == nome) {
-                foreach (modeloProduto in categoriaProduto._modelosProdutos)
+                foreach(Produto produtoV in categoriaProduto._produtos)
                 {
-                    if (modeloProduto.Nome == Buscar)
+                    if(produto.Nome == nome)
                     {
-                        Console.WriteLine("Já existe Modelo com este NOME!\n");
-                        Console.WriteLine("1-Tentar outro Nome;");
-                        Console.WriteLine("2-Retornar!");
-                        string opcao = Console.ReadLine();
-                        while (opcao != "1" && opcao != "2")
-                        {
-                            Console.WriteLine("1-Tentar outro Nome;");
-                            Console.WriteLine("0-Retornar!");
-                        }
-                        if (opcao == "0")
-                        {
-                            return;
-                        }
-                        Console.Write("Nome: ");
-                        nome = Console.ReadLine();
+                        nomeExiste = true;
+                        break;
                     }
                 }
+
+                if (nomeExiste)
+                {
+                    Console.WriteLine("Produto informado já existe!");
+                    Console.WriteLine("1-Tentar novo Nome;");
+                    Console.WriteLine("0-Retornar.");
+
+                    string opcao = Console.ReadLine();
+
+                    while (opcao != "1" && opcao != "0")
+                    {
+                        Console.WriteLine("1-Tentar novo Nome;");
+                        Console.WriteLine("0-Retornar.");
+                        opcao = Console.ReadLine();
+                    }
+
+                    if (opcao == "0")
+                    {
+                        return;
+                    }
+                    Console.WriteLine("Nome: ");
+                    nome = Console.ReadLine();
+                }
             }
-            modeloProduto.Nome = nome;
+            produto.Nome = nome;
 
-            //CÓDIGO DE BARRA MODELO
+            //CÓDIGO DE BARRA PRODUTO
             Console.Write("Código de barra: ");
-            modeloProduto.CodigoBarra = Console.ReadLine();
+            string codigo = Console.ReadLine();
 
+            //VERIFICAR SE CÓDIGO DE BARRA JÁ EXISTE
+            bool codigoExiste = true;
+
+            while(codigoExiste)
+            {
+                codigoExiste = false;
+
+                foreach(Produto produtoV in categoriaProduto._produtos)
+                {
+                    if(produto.CodigoBarra == codigo)
+                    {
+                        codigoExiste = true;
+                        break;
+                    }
+                }
+
+                if(codigoExiste)
+                {
+                    Console.WriteLine("Código de Barra já existe!");
+                    Console.WriteLine("1-Tentar novo Còdigo de Barra;");
+                    Console.WriteLine("0-Retornar.");
+
+                    string opcao = Console.ReadLine();
+
+                    while(opcao != "1" && opcao != "0")
+                    {
+                        Console.WriteLine("1-Tentar novo Còdigo de Barra;");
+                        Console.WriteLine("0-Retornar.");
+                        opcao = Console.ReadLine();
+                    }
+
+                    if(opcao == "0")
+                    {
+                        return;
+                    }
+                    Console.Write("Código de Barra: ");
+                    codigo = Console.ReadLine();
+                }
+            }
+            produto.CodigoBarra = codigo;
+
+            //FABRICANTE PRODUTO
             Console.Write("Fabricante: ");
-            modeloProduto.Fabricante = Console.ReadLine();
+            produto.Fabricante = Console.ReadLine();
 
-            //ADICIONANDO NOVO OBJETO MODELO_PRODUTO A LISTA DE MODELOS DA CATEGORIA QUE FOI ENCONTRADA COM MÉTODO BUSCAR CATEGORIA E ALOCADO EM "categoriaProduto"
-            categoriaProduto._modelosProdutos.Add(modeloProduto);
+            //VALOR DE COMPRA
+            Console.Write("Valor de compra: ");
+            double.TryParse(Console.ReadLine(), out double valorCompra);
+            produto.ValorCompra = valorCompra;
+
+            //VALOR DE VENDA
+            Console.Write("Valor de Venda: ");
+            double.TryParse(Console.ReadLine(), out double valorVenda);
+            produto.ValorVenda = valorVenda;
+
+            //ADICIONANDO NOVO OBJETO PRODUTO A LISTA DE PRODUTOS DA CATEGORIA QUE FOI ENCONTRADA COM MÉTODO BUSCAR CATEGORIA E ALOCADO EM "categoriaProduto"
+            categoriaProduto._produtos.Add(produto);
         }
 
-        //LISTAR MODELOS PRODUTOS
-        private void ListarModelosProdutos()
+        //LISTAR PRODUTOS
+        private void ListarProdutos()
         {
             Console.WriteLine("Informe a Categoria desejada: \n");
             ListarCategoriasProdutos();
-            string categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
+            CategoriaProduto categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
 
-            if(categoriaProduto == null)
+            while(categoriaProduto == null)
             {
                 Console.WriteLine("Categoria não encontrado!");
+                Console.WriteLine("1-Tentar de novo;");
+                Console.WriteLine("0-Retornar.");
+
+                string opcao = Console.ReadLine();
+
+                while(opcao != "1" && opcao != "0")
+                {
+                    Console.WriteLine("1-Tentar novo nome;");
+                    Console.WriteLine("0-Retornar.");
+                    opcao = Console.ReadLine();
+                }
+
+                if(opcao == "0")
+                {
+                    return;
+                }
+
                 Console.WriteLine("Informe categoria válida da lista: \n");
                 ListarCategoriasProdutos();
                 categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
             }
-            foreach(ModeloProduto modeloProduto in _modelosProdutos)
-            {
-                if()
-                {
 
-                }
+            foreach(Produto produto in categoriaProduto._produtos)
+            {
+                Console.WriteLine($"Código: {produto.CodigoBarra}" + $" - Nome: {produto.Nome}");
             }
         }
 
-        /*
-        PRECISO CORRIGIR CLASSES E MÉTODOS: CATEGORIA, MODELO, PRODUTO (PRECISO SER CRIADO UMA CLASSE PRA CADA, INCLUINDO PARA CATEGORIA)
-        CLASSE CATEGORIA DEVERÁ TER UMA VARIÁVEL DO TIPO LISTA E ESSA LISTA DEVERÁ SER DO TIPO MODELO
-        POR SUA VEZ, CLASSE MODELO DEVERÁ TER UMA VARIÁVEL LISTA DO TIPO PRODUTO (QUANDO FOR INSTACIADO UM OBJETOS DESSES TIPOS SERÁ CRIADO UMA LISTA PARA CADA UMA DELAS)
-        POR EXEMPLO: QUANDO CRIAR CATEGORIA MOUSE, SERÁ CRIADO SUA VARIÁVEL LISTA DO TIPO MODELO E QUANDO FOR CRIADO POR EXEMPLO "MODELO A", SERÁ CRIADO SUA RESPECTIVA LISTA DO TIPO PRODUTO
-        QUANDO FOR CRIADO UM PRODUTO, ELE SERÁ CRIADO ACESSO SUA CATEGORIA, DEPOIS MODELO ENTÃO INCREMENTO UM AO SEU ESTOQUE, SE FOR MODELO NOVO, ENTÃO PRECISARÁ SER CRIADO SEU MODELO/CATEGORIA ANTES
-
-        */
-
-
-
-        //MÉTODO SISTEMA LOJA PARA PRODUTO
-        //CADASTRO PRODUTO
-        private void CadastrarProduto()
+        //BUSCAR PRODUTO POR NOME POR NOME
+        private Produto BuscarProdutoPorNome(string nome)
         {
-            //VERIFICAR SE EXISTE CATEGORIA PRODUTO CADASTRADA
+            CategoriaProduto categoriaProduto = new CategoriaProduto();
+
+            foreach(Produto produto in categoriaProduto._produtos)
+            {
+                if(produto.Nome == nome)
+                {
+                    return produto;
+                }
+            }
+            return null;
+        }
+
+        //BUSCAR PRODUTO POR CÓDIGO DE BARRA
+        private Produto BuscarProdutoPorCodigo(string codigo)
+        {
+            CategoriaProduto categoriaProduto = new CategoriaProduto();
+
+            foreach(Produto produto in categoriaProduto._produtos)
+            {
+                if(produto.CodigoBarra == codigo)
+                {
+                    return produto;
+                }
+            }
+            return null;
+        }
+
+        //CONSULTAR PRODUTO POR NOME
+        private void ConsultarProdutoPorNome()
+        {
             if (_categoriasProdutos.Count == 0)
             {
-                Console.WriteLine("Não existe categoria de Produtos cadastrado!");
-                Console.WriteLine("Necessário cadastrar categoria produto antes, para depois cadastrar o produto.");
-
-                return;
+                Console.WriteLine("Não existe Categoria de Produto cadastrado!");
+                Console.WriteLine("Necessário Cadastrar Categoria e depois Produto antes de Consultar!");
             }
 
-            //VERIFICAR SE EXISTE FORNECEDOR CADASTRADO
-            if(_fornecedores.Count == 0)
-            {
-                Console.WriteLine("Não existe fornecedor cadastrado!");
-                Console.WriteLine("Necessário cadastrar fornecedor, para depois cadastrar protudo.");
-
-                return;
-            }
-
-            //NOVO PRODUTO
-            Produto produto = new Produto();
-            
-            //CADASTRAR CATEGORIA DO PRODUTO
-            Console.WriteLine("Informe uma das categorias a baixo: \n");
+            Console.WriteLine("Informe Categoria desejada!");
             ListarCategoriasProdutos();
-            Console.Write("Categoria do Produto: ");
+            Console.Write("Categoria: ");
 
-            string categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
+            CategoriaProduto categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
 
             while (categoriaProduto == null)
             {
-                Console.WriteLine("Categoria não encontrada.");
-                Console.WriteLine("Informe uma das categorias a baixo: \n");
-                ListarCategoriasProdutos();
-                Console.Write("Categoria do Produto");
+                Console.WriteLine("Categoria Não localizada!");
+                Console.WriteLine("1-Tentar novo nome;");
+                Console.WriteLine("0-Retornar.");
+
+                string opcao = Console.ReadLine();
+
+                if (opcao != "1" && opcao != "0")
+                {
+                    Console.WriteLine("1-Tentar novo nome;");
+                    Console.WriteLine("0-Retornar.");
+                    opcao = Console.ReadLine();
+                }
+
+                if (opcao == "0")
+                {
+                    return;
+                }
+                Console.Write("Categoria: ");
                 categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
             }
-            produto.Categoria = categoriaProduto;
 
-            //CADASTRAR FORNECEDOR DO PRODUTO
-            Console.WriteLine("Informe CNPJ de um Fornecedor a baixo: \n");
-            ListarFornecedores();
-            Console.Write("Fornecedor do Produto: ");
-
-            string cnpjFornecedor = Console.ReadLine();
-
-            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(cnpjFornecedor);
-
-            while(fornecedor == null)
+            if(categoriaProduto._produtos.Count == 0)
             {
-                Console.WriteLine("Fornecedor não localizado!");
-                Console.WriteLine("Informe CNPJ de um dos Fornecedores a baixo: \n");
-                ListarFornecedores();
-                Console.Write("Fornecedor do Produto: ");
-                fornecedor = BuscarFornecedorPorCNPJ(cnpjFornecedor);
+                Console.WriteLine("Essa categoria ainda não possui Produto cadastrado!");
+
+                return;
             }
-            produto.NomeFornecedor = fornecedor.Nome;
 
-            //CADASTRAR NOME PRODUTO
-            Console.WriteLine("Nome do Produto: ");
-            produto.Nome = Console.ReadLine();
+            Console.WriteLine("Informe nome do Produto: ");
+            ListarProdutos();
+            Console.Write("Produto: ");
 
-            //CADASTRAR VALOR DE COMPRA PRODUTO
-            Console.WriteLine("Valor de Compra: ");
-            double.TryParse(Console.ReadLine(), out double valorDaCompra);
-            produto.ValorCompra = valorDaCompra;
+            Produto produto = BuscarProdutoPorNome(Console.ReadLine());
 
-            //CADASTRAR VALOR DE VENDA PRODUTO
-            Console.WriteLine("Valor de Venda: ");
-            double.TryParse(Console.ReadLine(), out double valorDaVenda);
-            produto.ValorVenda = valorDaVenda;
+            while(produto == null)
+            {
+                Console.WriteLine("Produto não localizado!");
+                Console.WriteLine("1-Tentar novo nome;");
+                Console.WriteLine("0-Retornar.");
 
-            //CADASTRAR ID PRODUTO
+                string opcao = Console.ReadLine();
 
+                while(opcao != "1" && opcao != "0")
+                {
+                    Console.WriteLine("1-Tentar novo nome;");
+                    Console.WriteLine("0-Retornar.");
+                    opcao = Console.ReadLine();
+                }
+                
+                if(opcao == "0")
+                {
+                    return;
+                }
 
+                Console.Write("Produto: ");
+                produto = BuscarProdutoPorNome(Console.ReadLine());
+            }
+
+            Console.WriteLine($"Código: {produto.CodigoBarra}" + $"Nome: {produto.Nome}");
+            Console.WriteLine($"Valor: {produto.ValorVenda}");
         }
+
+
+        //CONSULTAR PRODUTO POR CÓDIGO DE BARRA
+
+
+        //REMOVER PRODUTO
+
+
+        //EDITAR PRODUTO
+
 
 
     }//FIM DA CLASSE SISTEMA DA LOJA
@@ -1121,26 +1262,8 @@ namespace Loja_de_Informatica
         public long NCompras { get; set; }
     }
 
-
     //CLASSE PRODUTO
     class Produto
-    {
-        public string nomeModelo { get; set; }
-
-        public string NomeFornecedor { get; set; }
-
-        public string Nome { get; set; }
-
-        public double ValorCompra { get; set; }
-
-        public double ValorVenda { get; set; }
-
-        public int Estoque { get; set; }
-
-    }
-
-    //CLASSE MODELO PRODUTO
-    class ModeloProduto
     {
         public string Nome { get; set; }
 
@@ -1150,7 +1273,11 @@ namespace Loja_de_Informatica
 
         public string NomeFornecedor { get; set; }
 
-        public List<Produto> _produtos = new List<Produto>();
+        public double ValorCompra { get; set; }
+
+        public double ValorVenda { get; set; }
+
+        public int Estoque { get; set; }
     }
 
     //CLASSE CATEGORIA PRODUTO
@@ -1158,7 +1285,7 @@ namespace Loja_de_Informatica
     {
         public string Nome { get; set; }
 
-        public List<ModeloProduto> _modelosProdutos = new List<ModeloProduto>();
+        public List<Produto> _produtos = new List<Produto>();
     }
 
     //CLASSE NOTA FISCAL
