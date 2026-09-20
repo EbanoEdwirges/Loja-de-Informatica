@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -1092,7 +1093,7 @@ namespace Loja_de_Informatica
         }
         */
 
-        //LISTAR PRODUTOS
+        //LISTAR PRODUTOS ESTOQUE
         private void ListarProdutos(CategoriaProduto categoriaProduto)
         {
             foreach (Produto produto in categoriaProduto._produtos)
@@ -1101,8 +1102,6 @@ namespace Loja_de_Informatica
                 Console.WriteLine($"Valor de Compra: {produto.ValorCompra}" + $" - Valor de Venda: {produto.ValorVenda}\n");
             }
         }
-
-
 
         //BUSCAR PRODUTO POR NOME POR NOME
         private Produto BuscarProdutoPorNome(CategoriaProduto categoriaProduto, string nomeProduto)
@@ -1590,6 +1589,165 @@ namespace Loja_de_Informatica
             }
         }
 
+        //PRODUTOS FORNECEDOR
+        //CADASTRAR PRODUTO FORNECEDOR
+        private void CadastrarProdutoFornecedor(Fornecedor fornecedor, string codigo, string nome, double valorCompra)
+        {
+            Produto produto = new Produto();
+
+            produto.CodigoBarra = codigo;
+
+            produto.Nome = nome;
+
+            produto.ValorCompra = valorCompra;
+
+            fornecedor._produtosFornecedor.Add(produto);
+        }
+
+        //BUSCAR PRODUTO FORNECEDOR POR CÓDIGO
+        private Produto BuscarProdutoFornecedorPorCodigo(Fornecedor fornecedor, string codigoProduto)
+        {
+            foreach (Produto produto in fornecedor._produtosFornecedor)
+            {
+                if (produto.CodigoBarra == codigoProduto)
+                {
+                    return produto;
+                }
+            }
+            return null;
+        }
+
+        //EXIBIR PRODUTO FORNECEDOR POR CÓDIGO
+        private void ExibirProdutoFornecedor(Fornecedor fornecedor, string codigo)
+        {
+            Produto produto = BuscarProdutoFornecedorPorCodigo(fornecedor, codigo);
+
+            Console.WriteLine($"Código: {produto.CodigoBarra}" + $" - Nome: {produto.Nome}");
+            Console.WriteLine($"Valor Compra: {produto.ValorCompra}\n");
+        }
+
+
+        //LISTAR PRODUTOS FORNECEDOR POR CÓDIGO
+        public void ListarProdutosFornecedor()
+        {
+            Fornecedor fornecedor = new Fornecedor();
+
+            foreach (Produto produto in fornecedor._produtosFornecedor)
+            {
+                Console.WriteLine($"Código: {produto.CodigoBarra}" + $" - Nome: {produto.Nome}");
+                Console.WriteLine($"Valor Compra: {produto.ValorCompra}\n");
+            }
+        }
+
+        //REMOVER PRODUTO FORNECEDOR POR CÓDIGO
+        private void RemoverProdutoFornecedor(Fornecedor fornecedor, string codigo)
+        {
+            Produto produto = BuscarProdutoFornecedorPorCodigo(fornecedor, codigo);
+
+            fornecedor._produtosFornecedor.Remove(produto);
+        }
+
+        //EDITAR PRODUTO FORNECEDOR POR CÓDIGO
+        private void EditarProdutoFornecedor(Fornecedor fornecedor, string codigo, string nome, double valorCompra)
+        {
+            Produto produto = BuscarProdutoFornecedorPorCodigo(fornecedor, codigo);
+
+            produto.CodigoBarra = codigo;
+
+            produto.Nome = nome;
+
+            produto.ValorCompra = valorCompra;
+        }
+
+
+        //SISTEMA LOJA DE INFORMÁTICA
+        //CADASTRAR COMPRA
+        //[1]NOTA FISCAL -  [1]COMPRA[...] - [1]CLIENTE
+        private void CadastrarCompra()
+        {
+            //NOVA COMPRA
+            Compra compra = new Compra();
+
+            //DADOS FORNECEDOR
+            Console.WriteLine("COMPRAR PRODUTO(S)!\n");
+            Console.WriteLine("Informe CNPJ do Fornecedor: ");
+            ListarFornecedores();
+            Console.Write("\nFornecedor: ");
+
+            Fornecedor fornecedor = BuscarFornecedorPorCNPJ(Console.ReadLine());
+
+            string opcao;
+
+            while (fornecedor == null)
+            {
+                Console.WriteLine("Fornecedor não localizado!");
+                Console.WriteLine("1-Tentar novo CNPJ;");
+                Console.WriteLine("0-Retornar.");
+
+                opcao = Console.ReadLine();
+
+                while (opcao != "1" && opcao != "0")
+                {
+                    Console.WriteLine("1-Tentar novo CNPJ;");
+                    Console.WriteLine("0-Retornar.");
+                    opcao = Console.ReadLine();
+                }
+
+                if (opcao == "0")
+                {
+                    return;
+                }
+
+                Console.Write("\nFornecedor: ");
+                fornecedor = BuscarFornecedorPorCNPJ(Console.ReadLine());
+            }
+            compra.NomeFornecedor = fornecedor.Nome;
+
+            compra.NomeFornecedor = fornecedor.Nome;
+
+            compra.TelefoneFornecedor = fornecedor.Telefone;
+
+            //PRODUTOS
+            Console.WriteLine("Inoforme Produtos!\n");
+            ListarProdutosFornecedor();
+            Console.Write("");
+
+
+
+        }
+
+
+        //LISTAR COMPRAS CLIENTE
+
+
+        //BUSCAR COMPRA CLIENTE
+
+
+        //CONSULTAR COMPRA CLIENTE
+
+
+        //EXIBIR COMPRA CLIENTE
+
+
+        //REMOVER COMPRA
+
+
+        //EDITAR COMPRA
+
+
+
+        //SISTEMA DA LOJA DE INFORMÁTICA
+        //EMITIR NOTA FISCAL
+        //[1]NOTA FISCAL -  [1]COMPRA[...] - [1]CLIENTE
+
+
+
+        //ELIMINAR NOTA FISCAL
+
+
+
+
+
     }//FIM DA CLASSE SISTEMA DA LOJA
 
 
@@ -1629,6 +1787,8 @@ namespace Loja_de_Informatica
         public string Telefone { get; set; }
 
         public string CNPJ { get; set; }
+
+        public List<Produto> _produtosFornecedor = new List<Produto>();
     }
 
     //CLASSE CLIENTE
@@ -1641,7 +1801,7 @@ namespace Loja_de_Informatica
         public string CPF { get; set; }
 
         //incrementar +1 sempre que cliente realizar uma compra
-        public long NCompras { get; set; }
+        public List<long> _compras { get; set; } = new List<long>();
     }
 
     //CLASSE PRODUTO
@@ -1687,19 +1847,19 @@ namespace Loja_de_Informatica
     //CLASSE COMPRA
     class Compra
     {
-        public List<Fornecedor> NomeFornecedor { get; set; }
+        public string NomeFornecedor { get; set; }
 
-        public List<Fornecedor> FoneFornecedor { get; set; }
+        public string TelefoneFornecedor { get; set; }
 
-        public List<Fornecedor> CnpjFornecedor { get; set; }
+        public string CnpjFornecedor { get; set; }
 
-        public List<Produto> IdProduto { get; set; }
+        public List<Produto> _idsProdutos { get; set; }
 
-        public List<Produto> NomeProduto { get; set; }
+        public List<Produto> _nomesProdutos { get; set; }
 
-        public List<Produto> ValorCompra { get; set; }
+        public List<Produto> _valoresCompras { get; set; }
 
-        public long QtdCompra { get; set; }
+        public NotaFiscal NotaFiscal { get; set; }
 
         public double ValorTotal { get; set; }
 
