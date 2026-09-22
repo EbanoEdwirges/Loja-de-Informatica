@@ -1668,11 +1668,14 @@ namespace Loja_de_Informatica
             //NOVA COMPRA
             Compra compra = new Compra();
 
+            NotaFiscal notaFiscal = new NotaFiscal();
+            notaFiscal.IdNota = NotaFiscal.IdNotas++;
+
             //DADOS FORNECEDOR
             Console.WriteLine("COMPRAR PRODUTO(S)!\n");
             Console.WriteLine("Informe CNPJ do Fornecedor: ");
             ListarFornecedores();
-            Console.Write("\nFornecedor: ");
+            Console.Write("\nCNPJ Fornecedor: ");
 
             Fornecedor fornecedor = BuscarFornecedorPorCNPJ(Console.ReadLine());
 
@@ -1701,19 +1704,159 @@ namespace Loja_de_Informatica
                 Console.Write("\nFornecedor: ");
                 fornecedor = BuscarFornecedorPorCNPJ(Console.ReadLine());
             }
-            compra.NomeFornecedor = fornecedor.Nome;
+            compra.CnpjFornecedor = fornecedor.CNPJ;
 
             compra.NomeFornecedor = fornecedor.Nome;
 
             compra.TelefoneFornecedor = fornecedor.Telefone;
 
-            //PRODUTOS
-            Console.WriteLine("Inoforme Produtos!\n");
-            ListarProdutosFornecedor();
-            Console.Write("");
+            string entrada = "";
+
+            while (entrada == "1")
+            {
+                //CATEGORIA
+                Console.WriteLine("Informe Categoria do Produto: ");
+                ListarCategoriasProdutos();
+                Console.Write("Categoria Produdo: ");
+
+                CategoriaProduto categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
+
+                while (categoriaProduto == null)
+                {
+                    Console.WriteLine("Categoria não localizada!");
+                    Console.WriteLine("1-Tentar novo nome;");
+                    Console.WriteLine("0-Retornar.");
+
+                    opcao = Console.ReadLine();
+
+                    while (opcao != "1" && opcao != "0")
+                    {
+                        Console.WriteLine("1-Tentar novo nome;");
+                        Console.WriteLine("0-Retornar.");
+                        opcao = Console.ReadLine();
+                    }
+
+                    if (opcao == "0")
+                    {
+                        return;
+                    }
+
+                    Console.Write("Categoria Produdo: ");
+                    categoriaProduto = BuscarCategoriaProdutoPorNome(Console.ReadLine());
+                }
+
+                //PRODUTOS
+                Console.WriteLine("1-Comprar Produto já cadastrado;");
+                Console.WriteLine("2-Comprar novo Produto.");
+
+                opcao = Console.ReadLine();
+
+                while(opcao != "1" && opcao != "2")
+                {
+                    Console.WriteLine("1-Comprar Produto já cadastrado;");
+                    Console.WriteLine("2-Comprar novo Produto.");
+                    opcao = Console.ReadLine();
+                }
+
+                Console.WriteLine("Inoforme Código do Produtos!\n");
+                ListarProdutosFornecedor();
+                Console.Write("\nCódigo do Produto: ");
+
+                Produto produto = BuscarProdutoFornecedorPorCodigo(fornecedor, Console.ReadLine());
+
+                if (opcao == "1")
+                {
+                    while (produto == null)
+                    {
+                        Console.WriteLine("Produto não localizado!");
+                        Console.WriteLine("1-Informar código;");
+                        Console.WriteLine("0-Retornar.");
+
+                        opcao = Console.ReadLine();
+
+                        while (opcao != "1" && opcao != "0")
+                        {
+                            Console.WriteLine("1-Informar código;");
+                            Console.WriteLine("0-Retornar.");
+                            opcao = Console.ReadLine();
+                        }
+
+                        if (opcao == "0")
+                        {
+                            return;
+                        }
+
+                        Console.Write("\nCódigo do Produto: ");
+                        produto = BuscarProdutoPorCodigo(categoriaProduto, Console.ReadLine());
+                    }
+                }
+
+                else if (opcao == "2")
+                {
+                    Console.WriteLine("Informe Valor de Venda: ");
+                    double.TryParse(Console.ReadLine(), out double valorVenda);
+                    produto.ValorVenda = valorVenda;
+
+                    categoriaProduto._produtos.Add(produto);
+                }
+
+                Console.WriteLine("Quantidade: ");
+                int.TryParse(Console.ReadLine(), out int quantidade);
+
+                Produto produtoNota = produto;
+
+                produtoNota.Quantidade = quantidade;
+
+                notaFiscal._produtosNota.Add(produto);
+
+                produto.Quantidade += quantidade;
+
+                notaFiscal.ValorTotal += produto.ValorCompra * quantidade;
+
+                Console.WriteLine("1-Incluir outro Produto;");
+                Console.WriteLine("0-Finalizar Compra.");
+
+                while (entrada != "1" && entrada != "0")
+                {
+                    Console.WriteLine("1-Incluir outro Produto;");
+                    Console.WriteLine("0-Finalizar Compra.");
+                }
+
+                entrada = Console.ReadLine();
+            }
+
+            Console.WriteLine("1-Finalizar Compra;");
+            Console.WriteLine("2-Modificar Compra;");
+            Console.WriteLine("3-Cancelar.");
+            entrada = Console.ReadLine();
+
+            while (entrada != "1" && entrada != "2" && entrada != "3")
+            {
+                Console.WriteLine("1-Finalizar Compra;");
+                Console.WriteLine("2-Modificar Compra;");
+                Console.WriteLine("3-Cancelar.");
+                entrada = Console.ReadLine();
+            }
+
+            if(entrada == "3")
+            {
+                return;
+            }
+
+            else if (entrada == "2")
+            {
+                foreach (Produto produtoV in notaFiscal._produtosNota)
+                {
+                    Console.WriteLine($"Código: { }");
+                }
+            }
+            
 
 
 
+            Console.WriteLine("Compra Finalizada com Sucesso!");
+
+            _notaFiscais.Add(notaFiscal);
         }
 
 
@@ -1819,7 +1962,7 @@ namespace Loja_de_Informatica
 
         public double ValorVenda { get; set; }
 
-        public int Estoque { get; set; }
+        public int Quantidade { get; set; }
     }
 
     //CLASSE CATEGORIA PRODUTO
@@ -1833,13 +1976,11 @@ namespace Loja_de_Informatica
     //CLASSE NOTA FISCAL
     class NotaFiscal
     {
-        public long Id { get; set; } = 100000;
+        public static long IdNotas { get; set; } = 100000;
 
-        public List<Produto> IdProduto { get; set; }
+        public long IdNota { get; set; }
 
-        public List<Produto> NomeProdutos { get; set; }
-
-        public List<Produto> ValorVenda { get; set; }
+        public List<Produto> _produtosNota { get; set; }
 
         public double ValorTotal { get; set; }
     }
@@ -1853,26 +1994,23 @@ namespace Loja_de_Informatica
 
         public string CnpjFornecedor { get; set; }
 
-        public List<Produto> _idsProdutos { get; set; }
+        public NotaFiscal _notaFiscal { get; set; }
 
-        public List<Produto> _nomesProdutos { get; set; }
+        public string[] FormaPagamento { get; set; } = { "A Vista", "Pix", "Crédito", "Débito" };
 
-        public List<Produto> _valoresCompras { get; set; }
+        public string[] NumeroParcelasCredito { get; set; } = { "1x", "2x", "3x", "4x", "5x", "6x" };
 
-        public NotaFiscal NotaFiscal { get; set; }
-
-        public double ValorTotal { get; set; }
-
+        public bool Pago { get; set; }
     }
 
     //CLASSE VENDA
     class Venda
     {
-        public List<Cliente> NomeCliente { get; set; }
+        public string NomeCliente { get; set; }
 
-        public List<Cliente> FoneCliente { get; set; }
+        public string FoneCliente { get; set; }
 
-        public List<Cliente> CpfCliente { get; set; }
+        public string CpfCliente { get; set; }
 
         //verificar nCompras para confirmar se cliente ativo ou não e fornecer desconto se cliente com X compras
         private List<Cliente> NComprasCliente { get; set; }
