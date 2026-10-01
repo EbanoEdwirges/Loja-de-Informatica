@@ -43,6 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\CategoriaProduto.cs" />
+    <Compile Include="Entidades\Cliente.cs" />
+    <Compile Include="Entidades\Compra.cs" />
+    <Compile Include="Entidades\Fornecedor.cs" />
+    <Compile Include="Entidades\Funcionario.cs" />
+    <Compile Include="Entidades\ItemCompra.cs" />
+    <Compile Include="Entidades\ItemNotaFiscal.cs" />
+    <Compile Include="Entidades\ItemVenda.cs" />
+    <Compile Include="Entidades\ProdutoFornmecedor.cs" />
+    <Compile Include="Entidades\Venda.cs" />
+    <Compile Include="Menus\Menu.cs" />
+    <Compile Include="Entidades\NotaFiscal.cs" />
+    <Compile Include="Entidades\Produto.cs" />
+    <Compile Include="SistemaLoja.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
